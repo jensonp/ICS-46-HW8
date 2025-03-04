@@ -64,18 +64,15 @@ VertexList dfs(const Graph& graph, Vertex startVertex){
     vector<bool> v(graph.numVertices, false);
     VertexList t;
     stack<Vertex> s({startVertex});
-    while(!s.empty()){
+    for(;!s.empty();){
         Vertex u = s.top(); s.pop();
         if (!v[u]){
             v[u] = true;
             t.push_back(u);            
             VertexList n = graph.edges_from(u);
-            sort(n.begin(), n.end());  // sort in ascending order
-            // Push in forward order so that the later (larger) neighbor ends up on top.
-            for(auto it = n.begin(); it != n.end(); ++it){
-                if(!v[*it])
-                    s.push(*it);
-            }
+            //sort(n.begin(), n.end());
+            sort(n.rbegin(), n.rend());
+            for(auto it=n.begin(); it!=n.end(); ++it){ if(!v[*it]) s.push(*it); }
         }
     }
     return t;
@@ -90,7 +87,6 @@ VertexList bfs(const Graph& graph, Vertex startVertex){
         Vertex u=q.front(); q.pop();
         t.push_back(u);
         VertexList n=graph.edges_from(u);
-        //sort(n.begin(), n.end());
         for(Vertex w:n){ if(!v[w]){ v[w]=true; q.push(w);} }
     }
     return t;
