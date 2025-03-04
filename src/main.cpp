@@ -1,9 +1,9 @@
 #include "graph.h"
 int main(int argc, char *argv[]){
     //string filename = get_arg(argc, argv, "small.txt");
-    //string filename = get_arg(argc, argv, "medium.txt");
+    string filename = get_arg(argc, argv, "medium.txt");
     //string filename = get_arg(argc, argv, "large.txt");
-    string filename = get_arg(argc, argv, "largest.txt");
+    //string filename = get_arg(argc, argv, "largest.txt");
     Graph G;
     file_to_graph(filename, G);
     

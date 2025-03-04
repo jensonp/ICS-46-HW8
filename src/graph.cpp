@@ -25,10 +25,7 @@ Graph Graph::sort_edges()const{
 }
 VertexList Graph::edges_from(Vertex vertex)const{
     VertexList n;
-    for(const Edge &e:*this){
-        if(e.u==vertex) n.push_back(e.v);
-        else if(e.v==vertex) n.push_back(e.u);
-    }
+    for(const Edge &e: *this){ if(e.u==vertex) n.push_back(e.v); }
     return n;
 }
 
@@ -58,13 +55,13 @@ VertexList dfs(const Graph& graph, Vertex startVertex){
         if (!v[u]){
         v[u]=true; t.push_back(u);            
         VertexList n=graph.edges_from(u);
-        sort(n.rbegin(), n.rend());
-        for(Vertex w:n){ if(!v[w]) s.push(w); }
+        sort(n.begin(), n.end());
+        for(auto it=n.rbegin(); it!=n.rend();++it){ if(!v[*it]) s.push(*it); }
         }
     }
     return t;
 }
-VertexList bfs(const Graph& graph, Vertex startVertex) {
+VertexList bfs(const Graph& graph, Vertex startVertex){
     vector<bool> v(graph.numVertices, false);
     v[startVertex]=true;
     VertexList t;
@@ -73,8 +70,7 @@ VertexList bfs(const Graph& graph, Vertex startVertex) {
         Vertex u=q.front(); q.pop();
         t.push_back(u);
         VertexList n=graph.edges_from(u);
-        sort(n.begin(), n.end());
-        for(Vertex w:n){ if(!v[w]){ v[w]=true; q.push(w);}}
+        for(Vertex w:n){ if(!v[w]){ v[w]=true; q.push(w);} }
     }
     return t;
 }
