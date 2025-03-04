@@ -60,25 +60,25 @@ VertexList dfs(const Graph& graph, Vertex startVertex){
     return t;
 }
 */
-VertexList dfs(const Graph& graph, Vertex startVertex) {
-    vector<bool> visited(graph.numVertices, false);
-    VertexList order;
+VertexList dfs(const Graph& graph, Vertex startVertex){
+    vector<bool> v(graph.numVertices, false);
+    VertexList t;
     stack<Vertex> s({startVertex});
-    while (!s.empty()) {
-        Vertex u = s.top();
-        s.pop();
-        if (!visited[u]) {
-            visited[u] = true;
-            order.push_back(u);
-            VertexList neighbors = graph.edges_from(u);
-            sort(neighbors.begin(), neighbors.end(), greater<Vertex>());
-            for (Vertex w : neighbors) {
-                if (!visited[w])
-                    s.push(w);
+    while(!s.empty()){
+        Vertex u = s.top(); s.pop();
+        if (!v[u]){
+            v[u] = true;
+            t.push_back(u);            
+            VertexList n = graph.edges_from(u);
+            sort(n.begin(), n.end());  // sort in ascending order
+            // Push in forward order so that the later (larger) neighbor ends up on top.
+            for(auto it = n.begin(); it != n.end(); ++it){
+                if(!v[*it])
+                    s.push(*it);
             }
         }
     }
-    return order;
+    return t;
 }
 
 VertexList bfs(const Graph& graph, Vertex startVertex){
