@@ -23,11 +23,6 @@ Graph Graph::sort_edges()const{
     sort(s.begin(), s.end(), [](const Edge &a, const Edge &b){ return a.weight<b.weight; });
     return s;
 }
-VertexList Graph::edges_from(Vertex vertex)const{
-    VertexList n;
-    for(const Edge &e: *this){ if(e.u==vertex) n.push_back(e.v); }
-    return n;
-}
 // Kruskals
 EdgeList Kruskals(const Graph &G){
     EdgeList mst;
@@ -43,23 +38,12 @@ EdgeList Kruskals(const Graph &G){
 }
 int sum_weights(EdgeList const &L){ return std::accumulate(L.begin(), L.end(), 0, [](int s, const Edge &e){return s+e.weight;}); }
 // Traversals
-/*
-VertexList dfs(const Graph& graph, Vertex startVertex){
-    vector<bool> v(graph.numVertices, false);
-    VertexList t;
-    stack<Vertex> s({startVertex});
-    for(;!s.empty();){
-        Vertex u=s.top(); s.pop();
-        if (!v[u]){
-        v[u]=true; t.push_back(u);            
-        VertexList n=graph.edges_from(u);
-        sort(n.rbegin(), n.rend());
-        for(auto it=n.rbegin(); it!=n.rend();++it){ if(!v[*it]) s.push(*it); }
-        }
-    }
-    return t;
+VertexList Graph::edges_from(Vertex vertex)const{
+    VertexList n;
+    for(const Edge &e: *this){ if(e.u==vertex) n.push_back(e.v); }
+    return n;
 }
-*/
+/*
 VertexList dfs(const Graph& graph, Vertex startVertex){
     vector<bool> v(graph.numVertices, false);
     VertexList t;
@@ -77,7 +61,24 @@ VertexList dfs(const Graph& graph, Vertex startVertex){
     }
     return t;
 }
+*/
+void dfs_rec(const Graph &g, Vertex u, vector<bool> &visited, VertexList &order) {
+    visited[u] = true;
+    order.push_back(u);
+    VertexList nbrs = g.edges_from(u);
+    // sort in ascending order to get the expected neighbor order
+    sort(nbrs.begin(), nbrs.end());
+    for (Vertex v : nbrs)
+        if (!visited[v])
+            dfs_rec(g, v, visited, order);
+}
 
+VertexList dfs(const Graph &g, Vertex startVertex) {
+    vector<bool> visited(g.numVertices, false);
+    VertexList order;
+    dfs_rec(g, startVertex, visited, order);
+    return order;
+}
 VertexList bfs(const Graph& graph, Vertex startVertex){
     vector<bool> v(graph.numVertices, false);
     v[startVertex]=true;
