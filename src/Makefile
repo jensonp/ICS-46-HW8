@@ -1,14 +1,19 @@
-F = -std=c++20 -Wall -Wextra -Wpedantic -Wfatal-errors
-Z = ICS46_hw8.zip
-P = graph
+CXX      = g++
+CXXFLAGS := -ggdb -std=c++20 -Wall -Wextra -Werror -Wfatal-errors -pedantic -fsanitize=address,undefined 
 
-def: $P
+SRCDIR  = src
+SRCS    = main.cpp graph.cpp
+OBJS    = $(SRCS:.cpp=.o)
+TARGET  = graph
 
-graph: graph.cpp main.cpp graph.h
-	g++ $F graph.cpp main.cpp -o graph
+all: $(TARGET)
 
+$(TARGET): $(OBJS)
+	$(CXX) $(CXXFLAGS) -o $(TARGET) $(OBJS)
+
+$(SRCDIR)/%.o: $(SRCDIR)/%.cpp
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+.PHONY: clean
 clean:
-	/bin/rm -f $P $Z
-
-zip: clean
-	zip $Z Makefile main.cpp graph.h graph.cpp small.txt medium.txt large.txt largest.txt
+	rm -f $(OBJS) $(TARGET)
