@@ -53,10 +53,13 @@ VertexList dfs(const Graph& graph, Vertex startVertex){
         if (!v[u]){
             v[u] = true;
             t.push_back(u);            
-            VertexList n=graph.edges_from(u);
-            //sort(n.begin(), n.end());
-            //sort(n.rbegin(), n.rend());
-            for(auto it=n.begin(); it!=n.end(); ++it){ if(!v[*it]) s.push(*it); }
+            VertexList n = graph.edges_from(u);
+            std::sort(n.begin(), n.end());
+            for(auto w:n){
+                if (!v[w]){
+                    s.push(w);
+                }
+            }            
         }
     }
     return t;
