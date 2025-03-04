@@ -28,7 +28,6 @@ VertexList Graph::edges_from(Vertex vertex)const{
     for(const Edge &e: *this){ if(e.u==vertex) n.push_back(e.v); }
     return n;
 }
-
 // Kruskals
 EdgeList Kruskals(const Graph &G){
     EdgeList mst;
@@ -42,9 +41,7 @@ EdgeList Kruskals(const Graph &G){
     }
     return mst;
 }
-
 int sum_weights(EdgeList const &L){ return std::accumulate(L.begin(), L.end(), 0, [](int s, const Edge &e){return s+e.weight;}); }
-
 // Traversals
 VertexList dfs(const Graph& graph, Vertex startVertex){
     vector<bool> v(graph.numVertices, false);
@@ -55,7 +52,7 @@ VertexList dfs(const Graph& graph, Vertex startVertex){
         if (!v[u]){
         v[u]=true; t.push_back(u);            
         VertexList n=graph.edges_from(u);
-        sort(n.begin(), n.end());
+        sort(n.rbegin(), n.rend());
         for(auto it=n.rbegin(); it!=n.rend();++it){ if(!v[*it]) s.push(*it); }
         }
     }
