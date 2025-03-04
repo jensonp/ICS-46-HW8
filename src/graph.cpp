@@ -49,13 +49,17 @@ VertexList dfs(const Graph& graph, Vertex startVertex){
     VertexList t;
     stack<Vertex> s({startVertex});
     for(;!s.empty();){
-        Vertex u = s.top(); s.pop();
+        Vertex u=s.top(); s.pop();
         if (!v[u]){
             v[u] = true;
-            t.push_back(u);            
-            VertexList n=graph.edges_from(u);
-            sort(n.begin(), n.end());
-            for(auto it = n.rbegin(); it != n.rend(); ++it){if (!v[*it]) s.push(*it);}           
+            t.push_back(u);      
+            VertexList n = graph.edges_from(u);
+            std::sort(n.begin(), n.end(), std::greater<Vertex>());
+            for (auto w : n) {
+                if (!v[w]) {
+                    s.push(w);
+                }
+            }           
         }
     }
     return t;
