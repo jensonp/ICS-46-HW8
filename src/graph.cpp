@@ -43,6 +43,7 @@ EdgeList Kruskals(const Graph &G){
 }
 int sum_weights(EdgeList const &L){ return std::accumulate(L.begin(), L.end(), 0, [](int s, const Edge &e){return s+e.weight;}); }
 // Traversals
+/*
 VertexList dfs(const Graph& graph, Vertex startVertex){
     vector<bool> v(graph.numVertices, false);
     VertexList t;
@@ -58,6 +59,28 @@ VertexList dfs(const Graph& graph, Vertex startVertex){
     }
     return t;
 }
+*/
+VertexList dfs(const Graph& graph, Vertex startVertex) {
+    vector<bool> visited(graph.numVertices, false);
+    VertexList order;
+    stack<Vertex> s({startVertex});
+    while (!s.empty()) {
+        Vertex u = s.top();
+        s.pop();
+        if (!visited[u]) {
+            visited[u] = true;
+            order.push_back(u);
+            VertexList neighbors = graph.edges_from(u);
+            sort(neighbors.rbegin(), neighbors.rend());
+            for (auto it = neighbors.rbegin(); it != neighbors.rend(); ++it) {
+                if (!visited[*it])
+                    s.push(*it);
+            }
+        }
+    }
+    return order;
+}
+
 VertexList bfs(const Graph& graph, Vertex startVertex){
     vector<bool> v(graph.numVertices, false);
     v[startVertex]=true;
