@@ -90,6 +90,7 @@ VertexList bfs(const Graph& graph, Vertex startVertex){
         Vertex u=q.front(); q.pop();
         t.push_back(u);
         VertexList n=graph.edges_from(u);
+        sort(n.begin(), n.end());
         for(Vertex w:n){ if(!v[w]){ v[w]=true; q.push(w);} }
     }
     return t;
