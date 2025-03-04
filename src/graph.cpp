@@ -46,19 +46,17 @@ VertexList Graph::edges_from(Vertex vertex)const{
 
 VertexList dfs(const Graph& graph, Vertex startVertex){
     vector<bool> v(graph.numVertices, false);
+    v[startVertex]=true;
     VertexList t;
     stack<Vertex> s({startVertex});
     for(;!s.empty();){
         Vertex u=s.top(); s.pop();
-        if (!v[u]){
-            v[u] = true;
-            t.push_back(u);      
-            VertexList n=graph.edges_from(u);
-            //sort(n.begin(), n.end());
-            //sort(n.rbegin(), n.rend());
-            //for (auto w:n){ if(!v[w]) s.push(w); }
-            //for(auto it=n.rbegin(); it!=n.rend();++it){if(!v[*it]) s.push(*it);}
-            for(auto it=n.rbegin(); it!=n.rend();++it){if(!v[*it]) s.push(*it);}           
+        t.push_back(u);
+        for(auto w:graph.edges_from(u)){
+            if (!v[w]){
+                v[w]=true; 
+                s.push(w); 
+            }
         }
     }
     return t;
